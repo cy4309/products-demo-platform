@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @layer base {
+  body {
+    @apply font-sans font-medium;
+  }
+} */
+
+@layer base {
+  body {
+    @apply font-custom;
+  }
+}
+
+/* @layer base {
+  h1 {
+    @apply py-4;
+  }
+
+  h2 {
+    @apply py-3;
+  }
+
+  p {
+    @apply py-2;
+  }
+
+  span {
+    @apply px-1;
+  }
+} */
