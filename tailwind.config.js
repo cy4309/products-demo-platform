@@ -11,7 +11,19 @@ module.exports = {
         primary: "#010127",
         secondary: "#CCFF00",
       },
+      spacing: {
+        layoutPadding: "6rem",
+      },
     },
   },
   plugins: [],
+  // plugins: [
+  //   plugin(function ({ addBase, theme }) {
+  //     addBase({
+  //       html: {
+  //         '--layout-padding': theme('spacing.layoutPadding'),
+  //       },
+  //     });
+  //   }),
+  // ],
 };
