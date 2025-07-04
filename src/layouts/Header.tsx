@@ -22,13 +22,13 @@ const Header: React.FC = () => {
 
   return (
     <header className="fixed top-0 z-50 p-4 h-layoutPadding w-full border-b flex justify-between items-center bg-primary">
-      <div className="flex items-center">
+      <div className="flex flex-col sm:flex-row items-center">
         <img src={spe3dLogo} alt="SPE3D" />
         <h2 className="ml-4 text-xl font-bold text-secondary">
           Intelligence in Motion
         </h2>
       </div>
-      <ul className="space-x-6 flex items-center">
+      <ul className="gap-2 flex flex-col sm:flex-row justify-center items-center">
         <li className="text-secondary">HOMEPAGE</li>
         <li className="relative">
           <BaseButton
