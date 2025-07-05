@@ -21,7 +21,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="fixed top-0 z-50 p-4 h-layoutPadding w-full border-b flex justify-between items-center bg-primary">
+    <header className="z-50 fixed top-0 p-4 h-layoutPadding w-full border-b flex justify-between items-center bg-primary">
       <div className="flex flex-col sm:flex-row items-center">
         <img src={spe3dLogo} alt="SPE3D" />
         <h2 className="ml-4 text-xl font-bold text-secondary">

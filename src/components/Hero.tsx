@@ -1,22 +1,21 @@
-// import { useEffect } from "react";
+import { useRef } from "react";
 import BaseButton from "@/components/BaseButton";
 import Section from "@/components/Section";
 import project1 from "@/assets/images/project1.png";
-// import project2 from "@/assets/images/project2.png";
-// import project3 from "@/assets/images/project3.png";
-// import project4 from "@/assets/images/project4.png";
+import project2 from "@/assets/images/project2.png";
+import project3 from "@/assets/images/project3.png";
+import project4 from "@/assets/images/project4.png";
 import service1 from "@/assets/images/service1.avif";
-// import service2 from "@/assets/images/service2.avif";
-// import service3 from "@/assets/images/service3.avif";
-// import service4 from "@/assets/images/service4.avif";
-// import service5 from "@/assets/images/service5.avif";
+import service2 from "@/assets/images/service2.avif";
+import service3 from "@/assets/images/service3.avif";
+import service4 from "@/assets/images/service4.avif";
+import banner from "@/assets/images/banner.avif";
 // import gsap from "gsap";
 // import ScrollTrigger from "gsap/ScrollTrigger";
-// import { useGsap } from "@/hooks/useGsap";
+import { useGsap } from "@/hooks/useGsap";
 
-// gsap.registerPlugin(ScrollTrigger);
-const projects = [project1];
-const services = [service1];
+const projects = [project1, project2, project3, project4];
+const services = [service1, service2, service3, service4];
 
 const links = [
   { url: "https://snap-camera-kit-web.vercel.app/", title: "SNAP" },
@@ -24,11 +23,41 @@ const links = [
   { url: "https://product-showcase-demo.vercel.app/", title: "PICBOT-ANI" },
   {
     url: "https://guandu-dock-r3f-mindar.vercel.app/",
-    title: "GUANDU-WITHOUT-EDITOR",
+    title: "GUANDU",
+  },
+];
+
+const servicesLinks = [
+  {
+    url: "https://www.youtube.com/watch?v=DLA8f9Xlnlw&feature=youtu.be",
+    title: "AI Virtual Studio",
+    content:
+      "Bring fans closer to their idols with real-time, ultra-realistic virtual set creation—no green screen required.",
+  },
+  {
+    url: "https://www.spe3d.co/blog/categories/3d-picbot",
+    title: "3D Picbot",
+    content:
+      "Engage audiences through immersive AR on LCD panels, while L-shaped mini-billboards project stunning 3D anamorphic content—perfect for pop-up activations.",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=hr88qbO8nrY&feature=youtu.be",
+    title: "iMorph",
+    content:
+      "Seamlessly transfer 3D anamorphic videos between displays, slashing content-transfer costs and streamlining your creative workflow.",
+  },
+  {
+    url: "https://www.spe3d.co/post/global-beauty-industry-ai-revolution-speed-3d-s-smart-beauty-vending-machine-partners-with-maybelli",
+    title: "Smart Beauty Vending Machine",
+    content:
+      "Try Now, Buy Now. Speed 3D's Smart Beauty Vending Machine partners with Qualcomm tech and Maybelline products through instant AR try-on and AI-powered recommendations.",
   },
 ];
 
 const Hero: React.FC = () => {
+  const imageRefs = useRef<HTMLImageElement[]>([]);
+  const linkRefs = useRef<HTMLAnchorElement[]>([]);
+
   // useEffect(() => {
   //   ScrollTrigger.create({
   //     trigger: step,
@@ -64,6 +93,62 @@ const Hero: React.FC = () => {
   //     ease: "power2.out",
   //   });
   // });
+
+  // 你可以也先 clear 避免 React 重複掛載
+  imageRefs.current = [];
+  linkRefs.current = [];
+
+  const setImageRef = (el: HTMLImageElement | null) => {
+    if (el) imageRefs.current.push(el);
+  };
+  const setLinkRef = (el: HTMLAnchorElement | null) => {
+    if (el) linkRefs.current.push(el);
+  };
+
+  //
+  useGsap((gsap) => {
+    imageRefs.current.forEach((img, i) => {
+      const offsetX =
+        i === 0
+          ? "-65vw"
+          : i === 1
+          ? "-90vw"
+          : i === 2
+          ? "-113vw"
+          : i === 3
+          ? "-138vw"
+          : 0;
+      const offsetY = "85vh";
+
+      // @ts-ignore
+      gsap.fromTo(
+        img,
+        {
+          x: 0,
+          y: 0,
+          scale: 1,
+          opacity: 1,
+        },
+        {
+          x: offsetX,
+          y: offsetY,
+          scale: 0.4,
+          opacity: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: linkRefs.current[i],
+            start: "top center+=80",
+            end: "bottom center",
+            // start: "top center",
+            // end: "bottom center",
+            scrub: true,
+          },
+        }
+      );
+    });
+
+    return () => {};
+  });
 
   return (
     <>
@@ -112,10 +197,12 @@ const Hero: React.FC = () => {
         <div className="w-full h-full flex">
           {projects.map((project, index) => (
             <img
+              style={{ willChange: "transform, opacity" }}
               key={index}
               src={project}
               alt={`Hero Image ${index + 1}`}
               className="w-full h-full object-cover rounded-lg transition-all duration-500"
+              ref={setImageRef}
             />
           ))}
         </div>
@@ -125,13 +212,14 @@ const Hero: React.FC = () => {
         {links.map((link) => (
           <div
             key={link.url}
-            className="w-full h-[300px] flex flex-col items-center"
+            className="z-10 w-full h-[300px] flex flex-col items-center"
           >
             <a
               href={link.url}
               className="w-full h-full border-b rounded-xl shadow-xl text-white"
               target="_blank"
               rel="noopener noreferrer"
+              ref={setLinkRef}
             />
             <div className="mt-2 text-lg font-bold">{link.title}</div>
           </div>
@@ -139,16 +227,43 @@ const Hero: React.FC = () => {
       </Section>
 
       {/* services part */}
-      <Section className="gap-8 w-full h-[100dvh] flex flex-col sm:flex-row justify-center items-center">
-        <div className="w-full h-full flex">
+      <Section
+        pin
+        className="gap-8 w-full min-h-[100dvh] flex flex-col sm:flex-row justify-center items-center"
+      >
+        <div className="w-full h-full flex flex-col">
+          <h2 className="text-5xl font-bold text-center mb-8">
+            OUR KEY PRODUCTS
+          </h2>
           {services.map((service, index) => (
-            <img
-              key={index}
-              src={service}
-              alt={`Hero Image ${index + 1}`}
-              className="w-full h-full object-cover rounded-lg transition-all duration-500"
-            />
+            <div className="p-8 w-full h-full flex flex-col justify-center items-start border-t">
+              <strong className="px-8 text-2xl">
+                {servicesLinks[index].title}
+              </strong>
+
+              <div className="w-full h-full flex justify-center items-center">
+                <div className="w-full h-full flex flex-col justify-center items-start p-8 space-y-4">
+                  <p>{servicesLinks[index].content}</p>
+                  <BaseButton
+                    onClick={() =>
+                      window.open(servicesLinks[index].url, "_blank")
+                    }
+                    className="bg-secondary text-black font-semibold"
+                  >
+                    Learn More
+                  </BaseButton>
+                </div>
+
+                <img
+                  key={index}
+                  src={service}
+                  alt={`Hero Image ${index + 1}`}
+                  className="w-full h-full object-cover rounded-lg transition-all duration-500"
+                />
+              </div>
+            </div>
           ))}
+          <img src={banner} alt="Banner" />
         </div>
       </Section>
     </>
