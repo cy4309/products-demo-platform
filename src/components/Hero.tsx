@@ -194,7 +194,7 @@ const Hero: React.FC = () => {
           </BaseButton>
         </div>
 
-        <div className="w-full h-full flex">
+        <div className="w-full h-full flex flex-col sm:flex-row">
           {projects.map((project, index) => (
             <img
               style={{ willChange: "transform, opacity" }}
@@ -227,22 +227,22 @@ const Hero: React.FC = () => {
       </Section>
 
       {/* services part */}
-      <Section
-        pin
-        className="gap-8 w-full min-h-[100dvh] flex flex-col sm:flex-row justify-center items-center"
-      >
-        <div className="w-full h-full flex flex-col">
-          <h2 className="text-5xl font-bold text-center mb-8">
-            OUR KEY PRODUCTS
-          </h2>
-          {services.map((service, index) => (
-            <div className="p-8 w-full h-full flex flex-col justify-center items-start border-t">
-              <strong className="px-8 text-2xl">
+      <div className="w-full h-full flex flex-col">
+        <h2 className="text-5xl font-bold text-center mb-8">
+          OUR KEY PRODUCTS
+        </h2>
+        {services.map((service, index) => (
+          <Section
+            key={index}
+            pin
+            className="gap-8 w-full flex flex-col sm:flex-row justify-center items-center"
+          >
+            <div className="p-8 w-full h-full flex flex-col justify-center items-center">
+              <strong className="py-16 text-3xl">
                 {servicesLinks[index].title}
               </strong>
-
-              <div className="w-full h-full flex justify-center items-center">
-                <div className="w-full h-full flex flex-col justify-center items-start p-8 space-y-4">
+              <div className="w-full h-full flex flex-col sm:flex-row justify-start items-center">
+                <div className="w-full h-full flex flex-col justify-center items-start space-y-4">
                   <p>{servicesLinks[index].content}</p>
                   <BaseButton
                     onClick={() =>
@@ -254,18 +254,31 @@ const Hero: React.FC = () => {
                   </BaseButton>
                 </div>
 
-                <img
-                  key={index}
-                  src={service}
-                  alt={`Hero Image ${index + 1}`}
-                  className="w-full h-full object-cover rounded-lg transition-all duration-500"
-                />
+                {index === 1 || index === 3 ? (
+                  <img
+                    src={service}
+                    alt={`Hero Image ${index + 1}`}
+                    className="w-full h-[50dvh] object-cover rounded-lg transition-all duration-500"
+                  />
+                ) : index === 0 ? (
+                  <iframe
+                    src="https://www.youtube.com/embed/oNvXEuujVzo?autoplay=1&mute=1"
+                    allow="autoplay; encrypted-media;"
+                    className="w-full min-h-[50dvh] object-cover rounded-lg transition-all duration-500"
+                  />
+                ) : (
+                  <iframe
+                    src="https://www.youtube.com/embed/AD5nrbxBVjo?autoplay=1&mute=1"
+                    allow="autoplay; encrypted-media;"
+                    className="w-full min-h-[50dvh] object-cover rounded-lg transition-all duration-500"
+                  />
+                )}
               </div>
             </div>
-          ))}
-          <img src={banner} alt="Banner" />
-        </div>
-      </Section>
+          </Section>
+        ))}
+        <img src={banner} alt="Banner" />
+      </div>
     </>
   );
 };
