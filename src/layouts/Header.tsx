@@ -4,8 +4,11 @@ import spe3dLogo from "@/assets/images/icons/spe3d-logo.avif";
 import usa from "@/assets/images/icons/usa.png";
 import twn from "@/assets/images/icons/twn.png";
 import jpn from "@/assets/images/icons/jpn.png";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -28,8 +31,27 @@ const Header: React.FC = () => {
           Intelligence in Motion
         </h2>
       </div>
-      <ul className="gap-2 flex flex-col sm:flex-row justify-center items-center">
-        <li className="text-secondary">HOMEPAGE</li>
+      <ul className="gap-2 sm:gap-4 text-xs flex flex-col sm:flex-row justify-center items-center">
+        <li
+          className={`cursor-pointer ${
+            location.pathname === "/"
+              ? "text-secondary border-b border-secondary"
+              : ""
+          }`}
+          onClick={() => navigate("/")}
+        >
+          HOMEPAGE
+        </li>
+        <li
+          className={`cursor-pointer ${
+            location.pathname === "/refs"
+              ? "text-secondary border-b border-secondary"
+              : ""
+          }`}
+          onClick={() => navigate("/refs")}
+        >
+          REFS
+        </li>
         <li className="relative">
           <BaseButton
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}

@@ -6,6 +6,7 @@ import { router_path } from "@/routers";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import BaseLayout from "@/layouts/BaseLayout";
 
+const Refs = lazy(() => import("@/pages/Refs"));
 const Error = lazy(() => import("@/pages/Error"));
 
 const SuspenseWrapper = ({ children }: { children: React.ReactNode }) => (
@@ -27,6 +28,10 @@ const App: React.FC = () => {
           index: true,
           path: router_path.index,
           element: <Home key="Home" />,
+        },
+        {
+          path: router_path.refs,
+          element: <Refs key="Refs" />,
         },
         {
           path: router_path.error,

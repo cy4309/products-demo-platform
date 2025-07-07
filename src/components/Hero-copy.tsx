@@ -10,6 +10,8 @@ import service2 from "@/assets/images/service2.avif";
 import service3 from "@/assets/images/service3.avif";
 import service4 from "@/assets/images/service4.avif";
 import banner from "@/assets/images/banner.avif";
+// import gsap from "gsap";
+// import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGsap } from "@/hooks/useGsap";
 
 const projects = [project1, project2, project3, project4];
@@ -55,11 +57,47 @@ const servicesLinks = [
 const Hero: React.FC = () => {
   const imageRefs = useRef<HTMLImageElement[]>([]);
   const linkRefs = useRef<HTMLAnchorElement[]>([]);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+
+  // useEffect(() => {
+  //   ScrollTrigger.create({
+  //     trigger: step,
+  //     start: "top center",
+  //     end: "bottom center",
+  //     onEnter: () => {
+  //       const imgEl = document.getElementById("hero-image") as HTMLImageElement;
+  //       imgEl.src = images[index]; // 切換圖片來源
+  //     },
+  //     onEnterBack: () => {
+  //       const imgEl = document.getElementById("hero-image") as HTMLImageElement;
+  //       imgEl.src = images[index]; // 滾回也會切圖
+  //     },
+  //   });
+  // }, []);
+
+  // useGsap((gsap) => {
+  //   const tl = gsap.timeline({
+  //     scrollTrigger: {
+  //       trigger: ".img-container",
+  //       start: "top center",
+  //       end: "+=100%",
+  //       scrub: true,
+  //       pin: true,
+  //     },
+  //   });
+
+  //   const spacing = 300;
+  //   tl.to(".hero-img", {
+  //     opacity: 1,
+  //     x: (i: number) => i * spacing - ((images.length - 1) * spacing) / 2,
+  //     stagger: 0.1,
+  //     ease: "power2.out",
+  //   });
+  // });
 
   // 可以先 clear 避免 React 重複掛載
   imageRefs.current = [];
   linkRefs.current = [];
+
   const setImageRef = (el: HTMLImageElement | null) => {
     if (el) imageRefs.current.push(el);
   };
@@ -68,9 +106,12 @@ const Hero: React.FC = () => {
   };
 
   useGsap((gsap) => {
-    if (isMobile) return () => {};
-    const offsetXs = ["-65vw", "-90vw", "-113vw", "-138vw"];
+    const isMobile = window.innerWidth < 640;
+    const offsetXs = isMobile
+      ? [0, 0, 0, 0]
+      : ["-65vw", "-90vw", "-113vw", "-138vw"];
     const offsetY = isMobile ? "30vh" : "85vh";
+
     imageRefs.current.forEach((img, i) => {
       // @ts-ignore
       gsap.fromTo(
@@ -84,8 +125,8 @@ const Hero: React.FC = () => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: linkRefs.current[i],
-            // start: "top center+=80",
-            // end: "bottom center",
+            start: "top center+=80",
+            end: "bottom center",
             scrub: true,
           },
         }
@@ -96,6 +137,25 @@ const Hero: React.FC = () => {
 
   return (
     <>
+      {/* <div className="w-full h-[75vh] flex"> */}
+      {/* <section className="w-full h-full flex flex-col justify-between items-center text-center">
+        <h1 className="text-7xl font-extrabold">SPEED 3D INC.</h1>
+        <h2 className="text-5xl font-bold">
+          AI Retail. <br /> Smart 3D Vision. <br /> Real Engagement.
+        </h2>
+        <p className="text-4xl">
+          From face to frame, our tech powers intelligent vision, interaction,
+          and image creation.
+        </p>
+        <BaseButton className="bg-secondary text-black font-semibold">
+          Send Your Request
+        </BaseButton>
+      </section>
+
+      <section className="w-full h-full flex justify-center items-center">
+        <img src={a} alt="Hero Image" className="w-full h-full object-cover" />
+      </section> */}
+
       <Section
         pin
         className="w-full h-full sticky top-0 flex flex-col sm:flex-row"
@@ -119,24 +179,22 @@ const Hero: React.FC = () => {
           </BaseButton>
         </div>
 
-        {!isMobile && (
-          <div className="w-full h-full flex flex-col sm:flex-row">
-            {projects.map((project, index) => (
-              <img
-                style={{ willChange: "transform, opacity" }}
-                key={index}
-                src={project}
-                alt={`Hero Image ${index + 1}`}
-                className="w-full h-full object-cover rounded-lg transition-all duration-500"
-                ref={setImageRef}
-              />
-            ))}
-          </div>
-        )}
+        <div className="w-full h-full flex flex-col sm:flex-row">
+          {projects.map((project, index) => (
+            <img
+              style={{ willChange: "transform, opacity" }}
+              key={index}
+              src={project}
+              alt={`Hero Image ${index + 1}`}
+              className="w-full h-full object-cover rounded-lg transition-all duration-500"
+              ref={setImageRef}
+            />
+          ))}
+        </div>
       </Section>
 
-      <Section className="p-8 gap-8 w-full min-h-[100dvh] flex flex-col sm:flex-row justify-center items-center">
-        {links.map((link, i) => (
+      <Section className="gap-8 w-full h-[100dvh] flex flex-col sm:flex-row justify-center items-center">
+        {links.map((link) => (
           <div
             key={link.url}
             className="z-10 w-full h-[300px] flex flex-col items-center"
@@ -147,15 +205,7 @@ const Hero: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               ref={setLinkRef}
-            >
-              {isMobile && (
-                <img
-                  src={projects[i]}
-                  alt={link.title}
-                  className="w-full h-full object-cover rounded-xl mb-2"
-                />
-              )}
-            </a>
+            />
             <div className="mt-2 text-lg font-bold">{link.title}</div>
           </div>
         ))}
